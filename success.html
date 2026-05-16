@@ -15,17 +15,65 @@
 
   <div id="success-container">
     <div class="success-box">
-      <div class="success-icon">🎉</div>
-      <h2>Ton drapeau est planté !</h2>
-      <p>Il apparaîtra sur la carte dans quelques secondes.</p>
-      <p class="success-sub">
-        Si quelqu'un t'écrase, tu recevras un email pour revenir surenchérir.
-      </p>
-      <a href="index.html" class="btn-back">
+      <div class="success-icon" id="icon">⏳</div>
+      <h2 id="title">Confirmation en cours...</h2>
+      <p id="message">On vérifie ton paiement, ça prend quelques secondes.</p>
+      <a href="index.html" class="btn-back" id="btn-back" style="display:none">
         👁️ Voir ma position sur la carte
       </a>
     </div>
   </div>
+
+  <script>
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtoeHd6YXFnYXl4emp0Y3ZvZHFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4OTExMDcsImV4cCI6MjA5NDQ2NzEwN30.lg36RWmCusXr5T5QX1kLUw21NkYYIUgXCwQ8shLXGY4';
+
+    async function verifyPayment() {
+      const params    = new URLSearchParams(window.location.search);
+      const sessionId = params.get('session');
+
+      if (!sessionId) {
+        document.getElementById('icon').textContent    = '❌';
+        document.getElementById('title').textContent   = 'Session introuvable';
+        document.getElementById('message').textContent = 'Retourne sur la carte et réessaie.';
+        return;
+      }
+
+      try {
+        const res = await fetch(
+          'https://khxwzaqgayxzjtcvodqo.supabase.co/functions/v1/bright-processor',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${SUPABASE_ANON}`
+            },
+            body: JSON.stringify({ sessionId })
+          }
+        );
+
+        const data = await res.json();
+
+        if (data.ok) {
+          document.getElementById('icon').textContent    = '🎉';
+          document.getElementById('title').textContent   = 'Ton drapeau est planté !';
+          document.getElementById('message').textContent = 'Il apparaît maintenant sur la carte.';
+          document.getElementById('btn-back').style.display = 'inline-block';
+        } else {
+          document.getElementById('icon').textContent    = '❌';
+          document.getElementById('title').textContent   = 'Erreur de confirmation';
+          document.getElementById('message').textContent = data.error || 'Contacte le support.';
+        }
+
+      } catch (err) {
+        document.getElementById('icon').textContent    = '❌';
+        document.getElementById('title').textContent   = 'Erreur réseau';
+        document.getElementById('message').textContent = 'Réessaie dans quelques instants.';
+        console.error(err);
+      }
+    }
+
+    verifyPayment();
+  </script>
 
 </body>
 </html>
