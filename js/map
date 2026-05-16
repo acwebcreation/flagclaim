@@ -112,17 +112,32 @@ function renderBadges() {
     const data = countryData[code];
     if (!c || !data || data.occupied === 0) return;
 
-    const badge = document.createElement('div');
-    badge.className  = 'country-badge';
-    badge.style.left = c.x + '%';
-    badge.style.top  = c.y + '%';
+    const badge       = document.createElement('div');
+    badge.className   = 'country-badge';
+    badge.style.left  = (c.x - 3) + '%';
+    badge.style.top   = (c.y + 18) + '%';
 
-    const top3 = data.topFlags.slice(0, 3).join(' ');
-    badge.innerHTML = `
-      <div class="badge-flags">${top3 || '🏴'}</div>
-      <div class="badge-count">${data.occupied}/${data.total}</div>
-    `;
+    const flagGroups  = data.topFlags.map(flag =>
+      `<span class="flag-group">${flag}<sup>${data.occupied}</sup></span>`
+    ).join('');
+
+    badge.innerHTML   = `<div class="badge-flags">${flagGroups || '🏴'}</div>`;
+
     badge.addEventListener('click', () => openPanel(code));
+    badge.addEventListener('mousemove', (e) => {
+      const tooltip   = document.getElementById('tooltip');
+      const name      = countryNames[code] || code;
+      const libre     = data.total - data.occupied;
+      const info      = data.isFull ? ' — PLEIN' : ` — ${libre} spots libres`;
+      tooltip.textContent   = name + info;
+      tooltip.style.display = 'block';
+      tooltip.style.left    = (e.pageX + 12) + 'px';
+      tooltip.style.top     = (e.pageY - 28) + 'px';
+    });
+    badge.addEventListener('mouseleave', () => {
+      document.getElementById('tooltip').style.display = 'none';
+    });
+
     container.appendChild(badge);
   });
 }
@@ -143,9 +158,10 @@ function initTooltip() {
       el.addEventListener('mousemove', (e) => {
         const name = countryNames[code] || code;
         const data = countryData[code];
-        const info = data
-          ? ` — ${data.occupied}/${data.total} spots`
-          : ' — 0 spots';
+        const libre = data ? data.total - data.occupied : data?.total || '?';
+        const info = data?.isFull
+          ? ` — ⚔️ PLEIN`
+          : ` — ${libre} spots libres`;
         tooltip.textContent   = name + info;
         tooltip.style.display = 'block';
         tooltip.style.left    = (e.pageX + 12) + 'px';
@@ -158,19 +174,17 @@ function initTooltip() {
   });
 }
 
+
 async function init() {
   await loadCountryData();
-  fetch('assets/europe.svg')
-    .then(r => r.text())
-    .then(svgContent => {
-      document.getElementById('map-container').innerHTML = svgContent;
-      const svg = document.querySelector('#map-container svg');
-      svg.style.width  = '100%';
-      svg.style.height = 'auto';
-      initCountries();
-      renderBadges();
-      initTooltip();
-    });
+  const response  = await fetch('assets/europe.svg');
+  const svgContent = await response.text();
+  document.getElementById('map-container').innerHTML = svgContent;
+  const svg = document.querySelector('#map-container svg');
+  svg.style.width  = '100%';
+  svg.style.height = 'auto';
+  initCountries();
+  renderBadges();
+  initTooltip();
 }
-
 init();

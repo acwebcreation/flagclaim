@@ -301,3 +301,32 @@ header p  { color: #aaaaaa; margin-top: 5px; }
 }
 
 .btn-back:hover { background: #E67E22; }
+
+.flag-group {
+  font-size:   14px;
+  margin-right: 3px;
+}
+.flag-group sup {
+  font-size:   9px;
+  color:       #E67E22;
+  font-weight: bold;
+}
+
+.country-badge {
+  position:       absolute;
+  transform:      translate(-50%, -50%);
+  background:     rgba(0, 0, 0, 0.75);
+  border:         1px solid rgba(255,255,255,0.2);
+  border-radius:  8px;
+  padding:        3px 6px;
+  text-align:     center;
+  cursor:         pointer;
+  pointer-events: all;
+  z-index:        10;
+  transition:     transform 0.2s;
+  font-size:      11px;
+}
+
+.country-badge:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+}

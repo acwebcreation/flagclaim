@@ -17,4 +17,6 @@ async function sbGet(table, params = '') {
 }
 
 var countryData = {};
-console.log('Config chargé ✅', SUPABASE_URL);
+console.log('countryData chargé ✅', countryData);
+console.log('IS occupé :', countryData['IS']?.occupied);
+console.log('BE occupé :', countryData['BE']?.occupied);

@@ -30,13 +30,6 @@ const countryNames = {
   MT:'Malte', CY:'Chypre', IS:'Islande', TR:'Turquie', XK:'Kosovo'
 };
 
-const mockData = {
-  FR: { occupied: 34, total: 100, topFlags: ['🇫🇷','🇲🇦','🇩🇿'], isFull: false },
-  BE: { occupied: 40, total: 40,  topFlags: ['🇧🇪','🇲🇦','🇹🇷'], isFull: true  },
-  DE: { occupied: 12, total: 100, topFlags: ['🇩🇪','🇹🇷','🇵🇱'], isFull: false },
-  IT: { occupied: 8,  total: 100, topFlags: ['🇮🇹','🇷🇴','🇦🇱'], isFull: false },
-  ES: { occupied: 5,  total: 100, topFlags: ['🇪🇸','🇲🇦','🇨🇴'], isFull: false },
-};
 
 const europeanCountries = [
   'FR','DE','GB','IT','ES','PT','BE','NL','PL','SE','NO','DK',
@@ -45,43 +38,8 @@ const europeanCountries = [
   'MT','CY','IS','TR','XK'
 ];
 
-// Charge le SVG
-fetch('assets/europe.svg')
-  .then(r => r.text())
-  .then(svgContent => {
-    document.getElementById('map-container').innerHTML = svgContent;
-    const svg = document.querySelector('#map-container svg');
-    svg.style.width  = '100%';
-    svg.style.height = 'auto';
-    initCountries();
-    renderBadges();
-    initTooltip();
-  });
 
 
-function renderBadges() {
-  document.querySelectorAll('.country-badge').forEach(b => b.remove());
-  const container = document.getElementById('map-container');
-
-  europeanCountries.forEach(code => {
-    const c    = centroids[code];
-    const data = mockData[code];
-    if (!c || !data) return;
-
-    const badge = document.createElement('div');
-    badge.className   = 'country-badge';
-    badge.style.left  = c.x + '%';
-    badge.style.top   = c.y + '%';
-
-    const top3 = data.topFlags.slice(0, 3).join(' ');
-    badge.innerHTML = `
-      <div class="badge-flags">${top3}</div>
-      <div class="badge-count">${data.occupied}/${data.total}</div>
-    `;
-    badge.addEventListener('click', () => openPanel(code));
-    container.appendChild(badge);
-  });
-}
 
 function initCountries() {
   document.querySelectorAll('#map-container path').forEach(path => {
@@ -98,7 +56,7 @@ function initCountries() {
     ];
     if (els.length === 0) return;
 
-    const data = mockData[code];
+    const data = countryData[code];
     els.forEach(el => {
       if (data?.isFull) {
         el.style.fill = '#E74C3C';
@@ -131,7 +89,7 @@ function initTooltip() {
     els.forEach(el => {
       el.addEventListener('mousemove', (e) => {
         const name = countryNames[code] || code;
-        const data = mockData[code];
+        const data = countryData[code];
         const info = data ? ` — ${data.occupied}/${data.total} spots` : ' — 0 spots';
         tooltip.textContent   = name + info;
         tooltip.style.display = 'block';
@@ -189,3 +147,27 @@ async function init() {
 }
 
 init();
+
+function renderBadges() {
+  document.querySelectorAll('.country-badge').forEach(b => b.remove());
+  const container = document.getElementById('map-container');
+
+  europeanCountries.forEach(code => {
+    const c    = centroids[code];
+    const data = countryData[code];
+    if (!c || !data || data.occupied === 0) return;
+
+    const badge = document.createElement('div');
+    badge.className  = 'country-badge';
+    badge.style.left = (c.x - 3) + '%';
+    badge.style.top  = (c.y + 18) + '%';
+
+    const flagGroups = data.topFlags.map(flag => `<span class="flag-group">${flag}<sup>${data.occupied}</sup></span>`).join("");
+
+    badge.innerHTML = `<div class="badge-flags">${flagGroups || '🏴'}</div>`;
+    badge.addEventListener('click', () => openPanel(code));
+    badge.addEventListener("mousemove", function(e){ var t=document.getElementById("tooltip"); if(!t)return; var libre=(countryData[code]?countryData[code].total-countryData[code].occupied:0); t.textContent=(countryNames[code]||code)+" - "+libre+" spots libres"; t.style.display="block"; t.style.left=(e.pageX+12)+"px"; t.style.top=(e.pageY-28)+"px"; });
+    badge.addEventListener("mouseleave", function(){ var t=document.getElementById("tooltip"); if(t)t.style.display="none"; });
+    container.appendChild(badge);
+  });
+}
