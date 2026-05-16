@@ -135,3 +135,104 @@ header p  { color: #aaaaaa; margin-top: 5px; }
   margin-top:   10px;
   font-style:   italic;
 }
+
+/* ===== SIDE PANEL ===== */
+.panel-header { margin-bottom: 15px; }
+.panel-header h2 { font-size: 1.4rem; margin-bottom: 8px; }
+
+.panel-spots {
+  display:         flex;
+  justify-content: space-between;
+  align-items:     center;
+}
+
+.available { color: #2ECC71; font-weight: bold; font-size: 13px; }
+.full      { color: #E74C3C; font-weight: bold; font-size: 13px; }
+.spot-count { color: #aaa; font-size: 13px; }
+
+.no-data { color: #aaa; font-size: 13px; font-style: italic; }
+
+/* Barre de remplissage */
+.fill-bar-container {
+  background:    #2a2a3a;
+  border-radius: 4px;
+  height:        6px;
+  margin-bottom: 20px;
+}
+.fill-bar {
+  background:    linear-gradient(90deg, #1E3A5F, #E67E22);
+  height:        100%;
+  border-radius: 4px;
+  transition:    width 0.5s ease;
+}
+
+/* Sections */
+.panel-section { margin-bottom: 20px; }
+.panel-section h3 {
+  font-size:     13px;
+  color:         #aaa;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+/* Composition nationalités */
+.flag-row {
+  display:     flex;
+  align-items: center;
+  gap:         8px;
+  margin-bottom: 6px;
+}
+.flag-emoji { font-size: 18px; width: 24px; }
+.flag-bar-wrap {
+  flex:          1;
+  background:    #2a2a3a;
+  border-radius: 3px;
+  height:        8px;
+}
+.flag-bar {
+  background:    #1E3A5F;
+  height:        100%;
+  border-radius: 3px;
+}
+.flag-pct { color: #aaa; font-size: 12px; width: 35px; text-align: right; }
+
+/* Occupants */
+.occupants-list { display: flex; flex-direction: column; gap: 8px; }
+.occupant {
+  display:       flex;
+  align-items:   center;
+  gap:           10px;
+  background:    #0f1a2e;
+  border-radius: 6px;
+  padding:       8px 12px;
+  font-size:     14px;
+}
+.occupant-pseudo { flex: 1; color: #ddd; }
+.premium-star { color: #F1C40F; }
+
+/* Message rassurant */
+.reassurance {
+  font-size:   11px;
+  color:       #888;
+  text-align:  center;
+  font-style:  italic;
+  margin:      10px 0 15px;
+}
+
+/* Boutons */
+.panel-actions { display: flex; flex-direction: column; gap: 10px; }
+
+.btn-classic, .btn-premium, .btn-war {
+  padding:       12px;
+  border:        none;
+  border-radius: 8px;
+  font-size:     15px;
+  font-weight:   bold;
+  cursor:        pointer;
+  transition:    opacity 0.2s;
+}
+.btn-classic { background: #1E3A5F; color: white; }
+.btn-premium { background: #E67E22; color: white; }
+.btn-war     { background: #E74C3C; color: white; }
+.btn-classic:hover, .btn-premium:hover, .btn-war:hover { opacity: 0.85; }
