@@ -5,3 +5,5 @@ const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 // Initialise le client Supabase
 // Renommé en "db" pour éviter le conflit avec le CDN
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+// Variable globale accessible par tous les fichiers
+var countryData = {};

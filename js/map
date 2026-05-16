@@ -38,7 +38,7 @@ const europeanCountries = [
 ];
 
 // Données réelles chargées depuis Supabase
-let countryData = {};
+//let countryData = {};
 
 
 // Charge les données et initialise la carte
