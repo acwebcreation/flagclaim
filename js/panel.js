@@ -127,7 +127,7 @@ function openPanel(countryCode) {
 
     <div class="panel-actions">
       ${!isFull ? `
-        <button class="btn-classic" onclick="buySpot('${countryCode}', 'classic')">
+        <button class="btn-classic" onclick="validateAndBuy('${countryCode}', 'classic')">
           🏴 Planter — 3€
         </button>
         <button class="btn-premium" onclick="togglePremium('${countryCode}')">
@@ -141,6 +141,7 @@ function openPanel(countryCode) {
     </div>
   `;
 
+
   panel.classList.remove('hidden');
   document.getElementById('close-panel').onclick = () => panel.classList.add('hidden');
 
@@ -148,10 +149,66 @@ function openPanel(countryCode) {
   loadPanelSpots(countryCode);
 }
 
+
 function togglePremium(countryCode) {
   const socialLabel = document.getElementById('social-label');
   const socialInput = document.getElementById('social-input');
+  const btnPremium  = document.querySelector('.btn-premium');
+
   if (socialLabel) socialLabel.style.display = 'block';
   if (socialInput) socialInput.style.display = 'block';
-  buySpot(countryCode, 'premium');
+
+  // Remplace le bouton par "Confirmer"
+  if (btnPremium) {
+    btnPremium.textContent = '✅ Confirmer — 6€';
+    btnPremium.onclick = () => validateAndBuy(countryCode, 'premium');
+  }
+}
+
+function validateAndBuy(countryCode, type) {
+  const pseudo = document.getElementById('pseudo-input')?.value.trim();
+  const social = document.getElementById('social-input')?.value.trim();
+
+  // Pseudo obligatoire pour tous
+  if (!pseudo) {
+    showFieldError('pseudo-input', 'Le pseudo est obligatoire');
+    return;
+  }
+
+  // Lien obligatoire pour premium
+  if (type === 'premium' && !social) {
+    showFieldError('social-input', 'Le lien réseau social est obligatoire');
+    return;
+  }
+
+  // Valide le format du lien
+  if (social && !social.includes('.')) {
+    showFieldError('social-input', 'Lien invalide — ex: instagram.com/tonpseudo');
+    return;
+  }
+
+  buySpot(countryCode, type);
+}
+
+function showFieldError(fieldId, message) {
+  const field = document.getElementById(fieldId);
+  if (!field) return;
+
+  field.style.border = '1px solid #E74C3C';
+
+  // Supprime l'ancien message d'erreur si présent
+  const existing = document.getElementById(fieldId + '-error');
+  if (existing) existing.remove();
+
+  const err = document.createElement('p');
+  err.id    = fieldId + '-error';
+  err.style.cssText = 'color:#E74C3C; font-size:11px; margin:4px 0 0';
+  err.textContent   = message;
+  field.insertAdjacentElement('afterend', err);
+
+  // Remet la bordure normale après 3 secondes
+  setTimeout(() => {
+    field.style.border = '1px solid #1E3A5F';
+    err.remove();
+  }, 3000);
 }
