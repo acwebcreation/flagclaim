@@ -48,6 +48,7 @@ fetch('assets/europe.svg')
 
     initCountries();
     renderBadges();
+    initTooltip();
   });
 
 function initCountries() {
@@ -102,7 +103,7 @@ function renderBadges() {
     badge.style.left = c.x + '%';
     badge.style.top  = c.y + '%';
 
-    const top3 = data.topFlags.slice(0, 3).join('');
+    const top3 = data.topFlags.slice(0, 3).join(' ');
     const pct  = Math.round((data.occupied / data.total) * 100);
 
     badge.innerHTML = `
@@ -113,4 +114,44 @@ function renderBadges() {
     badge.addEventListener('click', () => openPanel(code));
     container.appendChild(badge);
   });
+
+  function initTooltip() {
+  const tooltip = document.createElement('div');
+  tooltip.id = 'tooltip';
+  document.body.appendChild(tooltip);
+
+  europeanCountries.forEach(code => {
+    const el = document.getElementById(code)
+             || document.getElementById(code.toLowerCase());
+    if (!el) return;
+
+    el.addEventListener('mousemove', (e) => {
+      const name = countryNames[code] || code;
+      const data = mockData[code];
+      const info = data ? ` — ${data.occupied}/${data.total} spots` : ' — 0 spots';
+      tooltip.textContent = name + info;
+      tooltip.style.display = 'block';
+      tooltip.style.left = (e.pageX + 12) + 'px';
+      tooltip.style.top  = (e.pageY - 28) + 'px';
+    });
+
+    el.addEventListener('mouseleave', () => {
+      tooltip.style.display = 'none';
+    });
+  });
+}
+
+// Noms des pays en français
+const countryNames = {
+  FR:'France', DE:'Allemagne', GB:'Royaume-Uni', IT:'Italie',
+  ES:'Espagne', PT:'Portugal', BE:'Belgique', NL:'Pays-Bas',
+  PL:'Pologne', SE:'Suède', NO:'Norvège', DK:'Danemark',
+  FI:'Finlande', GR:'Grèce', RO:'Roumanie', CZ:'Tchéquie',
+  AT:'Autriche', CH:'Suisse', HU:'Hongrie', SK:'Slovaquie',
+  HR:'Croatie', SI:'Slovénie', RS:'Serbie', BG:'Bulgarie',
+  UA:'Ukraine', BY:'Biélorussie', MD:'Moldavie', LT:'Lituanie',
+  LV:'Lettonie', EE:'Estonie', AL:'Albanie', MK:'Macédoine',
+  BA:'Bosnie', ME:'Monténégro', IE:'Irlande', LU:'Luxembourg',
+  MT:'Malte', CY:'Chypre', IS:'Islande', TR:'Turquie', XK:'Kosovo'
+};
 }
