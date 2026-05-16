@@ -1,14 +1,14 @@
 const centroids = {
   FR:{x:48,y:56},DE:{x:55,y:42},GB:{x:38,y:35},IT:{x:58,y:62},
   ES:{x:32,y:65},PT:{x:24,y:68},BE:{x:49,y:40},NL:{x:50,y:37},
-  PL:{x:62,y:40},SE:{x:58,y:22},NO:{x:52,y:18},DK:{x:53,y:33},
+  PL:{x:62,y:40},SE:{x:75,y:22},NO:{x:52,y:18},DK:{x:53,y:33},
   FI:{x:66,y:18},GR:{x:65,y:75},RO:{x:68,y:55},CZ:{x:58,y:44},
   AT:{x:57,y:50},CH:{x:51,y:52},HU:{x:63,y:52},SK:{x:62,y:47},
   HR:{x:59,y:57},SI:{x:56,y:54},RS:{x:64,y:59},BG:{x:68,y:62},
   UA:{x:74,y:46},BY:{x:70,y:38},MD:{x:72,y:53},LT:{x:66,y:33},
   LV:{x:67,y:29},EE:{x:67,y:25},AL:{x:62,y:67},MK:{x:64,y:65},
   BA:{x:61,y:60},ME:{x:62,y:63},IE:{x:32,y:38},LU:{x:51,y:45},
-  MT:{x:58,y:82},CY:{x:74,y:80},IS:{x:22,y:12},TR:{x:78,y:68},XK:{x:63,y:63}
+  MT:{x:58,y:82},CY:{x:74,y:80},IS:{x:18,y:15},TR:{x:78,y:68},XK:{x:63,y:63}
 };
 
 const countryNames = {
@@ -120,8 +120,8 @@ function renderBadges() {
 
     const badge       = document.createElement('div');
     badge.className   = 'country-badge';
-    badge.style.left  = (c.x - 3) + '%';
-    badge.style.top   = (c.y + 18) + '%';
+    badge.style.left  = (c.x - 1) + '%';
+    badge.style.top   = (c.y + 15) + '%';
 
     const flagGroups  = data.topFlags.map(flag =>
       `<span class="flag-group">${flag}<sup>${data.occupied}</sup></span>`
@@ -195,71 +195,5 @@ async function init() {
 }
 init();
 
-function initZoom() {
-  const container = document.getElementById('map-container');
-  let scale  = 1;
-  let transX = 0;
-  let transY = 0;
 
-  function applyTransform() {
-    const svg = container.querySelector('svg');
-    if (svg) {
-      svg.style.transform       = `translate(${transX}px, ${transY}px) scale(${scale})`;
-      svg.style.transformOrigin = 'center center';
-    }
-    // Repositionne les badges
-    document.querySelectorAll('.country-badge').forEach(badge => {
-      badge.style.transform = `translate(-50%, -50%) scale(${1/scale})`;
-    });
-  }
 
-  // Zoom molette
-  container.addEventListener('wheel', (e) => {
-    e.preventDefault();
-    const delta = e.deltaY > 0 ? -0.1 : 0.1;
-    scale = Math.min(Math.max(scale + delta, 1), 4);
-    applyTransform();
-  });
-
-  // Boutons zoom
-  document.getElementById('zoom-in').addEventListener('click',  () => {
-    scale = Math.min(scale + 0.3, 4);
-    applyTransform();
-  });
-  document.getElementById('zoom-out').addEventListener('click', () => {
-    scale = Math.max(scale - 0.3, 1);
-    applyTransform();
-  });
-  document.getElementById('zoom-reset').addEventListener('click', () => {
-    scale = 1; transX = 0; transY = 0;
-    applyTransform();
-  });
-
-  // Drag pour se déplacer
-  let isDragging = false;
-  let startX, startY;
-
-  container.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    startX = e.clientX - transX;
-    startY = e.clientY - transY;
-    container.style.cursor = 'grabbing';
-  });
-
-  window.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
-    transX = e.clientX - startX;
-    transY = e.clientY - startY;
-    applyTransform();
-  });
-
-  window.addEventListener('mouseup', () => {
-    isDragging = false;
-    container.style.cursor = 'grab';
-  });
-
-  container.style.cursor = 'grab';
-  container.style.overflow = 'hidden';
-}
-
-initZoom();

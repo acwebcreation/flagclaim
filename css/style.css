@@ -669,34 +669,15 @@ header {
   font-size:  14px;
 }
 
-#zoom-controls {
-  position:   absolute;
-  top:        10px;
-  right:      10px;
-  z-index:    50;
-  display:    flex;
-  flex-direction: column;
-  gap:        4px;
-}
 
-#zoom-controls button {
-  width:         36px;
-  height:        36px;
-  background:    rgba(30, 58, 95, 0.9);
-  border:        1px solid #E67E22;
-  border-radius: 6px;
-  color:         white;
-  font-size:     18px;
-  cursor:        pointer;
-  display:       flex;
-  align-items:   center;
-  justify-content: center;
-}
-
-#zoom-controls button:hover { background: #E67E22; }
 
 #map-container {
   position: relative;
+}
+
+#map-wrapper {
+  position: relative;
+  overflow: hidden;
 }
 
 .fi {
@@ -704,6 +685,11 @@ header {
   height:        1.1em !important;
   border-radius: 2px;
   display:       inline-block;
+}
+
+#map-container svg {
+  width:      117% !important;
+  min-height: 85vh;
 }
 
 .badge-flags .fi { width: 1.2em !important; height: 0.9em !important; }

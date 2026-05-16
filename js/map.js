@@ -160,8 +160,8 @@ function renderBadges() {
 
     const badge = document.createElement('div');
     badge.className  = 'country-badge';
-    badge.style.left = (c.x - 3) + '%';
-    badge.style.top  = (c.y + 18) + '%';
+    badge.style.left = (c.x + 5) + '%';
+    badge.style.top  = (c.y + 14) + '%';
 
     const flagGroups = data.topFlags.map(flag => `<span class="flag-group">${flag}<sup>${data.occupied}</sup></span>`).join("");
 
