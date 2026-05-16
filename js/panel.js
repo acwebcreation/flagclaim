@@ -1,7 +1,6 @@
 // js/panel.js
-
 function openPanel(countryCode) {
-  const data = mockData[countryCode];
+  const data = countryData[countryCode]; // ← était mockData avant
   const name = countryNames[countryCode] || countryCode;
   const panel = document.getElementById('side-panel');
   const content = document.getElementById('panel-content');
