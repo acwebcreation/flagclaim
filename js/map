@@ -58,31 +58,21 @@ async function init() {
     });
 }
 
-// Charge les données depuis Supabase(db)
 async function loadCountryData() {
-  // Charge la config des pays (max spots, war_count, prix)
-  const { data: countries } = await db
-    .from('countries')
-    .select('*');
+  const countries = await sbGet('countries', 'select=*');
+  const spots     = await sbGet('spots', 'select=country_code,flag_origin&status=eq.active');
 
-  // Charge les spots actifs groupés par pays
-  const { data: spots } = await db
-    .from('spots')
-    .select('country_code, flag_origin')
-    .eq('status', 'active');
-
-  // Construit countryData
   if (countries) {
     countries.forEach(country => {
       const countrySpots = spots
         ? spots.filter(s => s.country_code === country.code)
         : [];
 
-      // Calcule le top 3 des nationalités
       const flagCounts = {};
       countrySpots.forEach(s => {
         flagCounts[s.flag_origin] = (flagCounts[s.flag_origin] || 0) + 1;
       });
+
       const topFlags = Object.entries(flagCounts)
         .sort((a, b) => b[1] - a[1])
         .slice(0, 3)
