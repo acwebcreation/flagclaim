@@ -96,6 +96,12 @@ function initCountries() {
       }
       el.style.cursor     = 'pointer';
       el.style.transition = 'opacity 0.2s';
+
+      // Badge HOT si guerres récentes
+      if (data?.warCount > 0) {
+        el.setAttribute('data-hot', 'true');
+      }
+
       el.addEventListener('mouseenter', () => els.forEach(e => e.style.opacity = '0.8'));
       el.addEventListener('mouseleave', () => els.forEach(e => e.style.opacity = '1'));
       el.addEventListener('click', () => openPanel(code));

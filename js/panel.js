@@ -1,9 +1,38 @@
-function openPanel(countryCode) {
-  const data = countryData[countryCode];
-  const name = countryNames[countryCode] || countryCode;
-  const panel = document.getElementById('side-panel');
-  const content = document.getElementById('panel-content');
+// js/panel.js
 
+async function loadPanelSpots(countryCode) {
+  const spots = await sbGet(
+    'spots',
+    `select=pseudo,flag_origin,has_link,planted_at&country_code=eq.${countryCode}&status=eq.active&order=planted_at.desc&limit=5`
+  );
+
+  const container = document.getElementById('panel-spots-list');
+  if (!container) return;
+
+  if (!spots || spots.length === 0) {
+    container.innerHTML = '<p class="no-data">Aucun spot planté — sois le premier !</p>';
+    return;
+  }
+
+  container.innerHTML = spots.map(spot => {
+    const flag = getFlagEmoji(spot.flag_origin);
+    const time = timeAgo(spot.planted_at);
+    return `
+      <div class="occupant">
+        <span>${flag}</span>
+        <span class="occupant-pseudo">${spot.pseudo || 'Anonyme'}</span>
+        ${spot.has_link ? '<span class="premium-star">⭐</span>' : ''}
+        <span style="color:#666; font-size:11px; margin-left:auto">${time}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+function openPanel(countryCode) {
+  const data     = countryData[countryCode];
+  const name     = countryNames[countryCode] || countryCode;
+  const panel    = document.getElementById('side-panel');
+  const content  = document.getElementById('panel-content');
   const isFull   = data ? data.occupied >= data.total : false;
   const warPrice = data ? data.warPrice : 12;
 
@@ -15,7 +44,7 @@ function openPanel(countryCode) {
     {code:'DE',name:'🇩🇪 Allemagne'},{code:'GB',name:'🇬🇧 Royaume-Uni'},
     {code:'NL',name:'🇳🇱 Pays-Bas'},{code:'PL',name:'🇵🇱 Pologne'},
     {code:'TR',name:'🇹🇷 Turquie'},{code:'RO',name:'🇷🇴 Roumanie'},
-    {code:'SN',name:'🇸🇳 Sénégal'},{code:'CI',name:'🇨🇮 Côte d\'Ivoire'},
+    {code:'SN',name:'🇸🇳 Sénégal'},{code:'CI',name:"🇨🇮 Côte d'Ivoire"},
     {code:'CM',name:'🇨🇲 Cameroun'},{code:'CD',name:'🇨🇩 Congo'},
     {code:'BR',name:'🇧🇷 Brésil'},{code:'US',name:'🇺🇸 USA'},
     {code:'CA',name:'🇨🇦 Canada'},{code:'MX',name:'🇲🇽 Mexique'},
@@ -25,8 +54,10 @@ function openPanel(countryCode) {
   ].sort((a,b) => a.name.localeCompare(b.name));
 
   content.innerHTML = `
+
+    <!-- En-tête -->
     <div class="panel-header">
-      <h2>${name}</h2>
+      <h2>${name} ${data?.warCount > 0 ? '🔥' : ''}</h2>
       <div class="panel-spots">
         <span class="${isFull ? 'full' : 'available'}">
           ${isFull ? '⚔️ PAYS PLEIN' : `${data ? data.total - data.occupied : '?'} spots libres`}
@@ -35,11 +66,13 @@ function openPanel(countryCode) {
       </div>
     </div>
 
+    <!-- Barre de remplissage -->
     ${data ? `
     <div class="fill-bar-container">
       <div class="fill-bar" style="width:${Math.round(data.occupied/data.total*100)}%"></div>
     </div>` : ''}
 
+    <!-- Composition -->
     ${data && data.topFlags.length > 0 ? `
     <div class="panel-section">
       <h3>🌍 Composition</h3>
@@ -56,7 +89,15 @@ function openPanel(countryCode) {
       </div>
     </div>` : ''}
 
-    <!-- Formulaire d'achat -->
+    <!-- Derniers inscrits -->
+    <div class="panel-section">
+      <h3>🕐 Derniers inscrits</h3>
+      <div id="panel-spots-list">
+        <div class="activity-item">Chargement...</div>
+      </div>
+    </div>
+
+    <!-- Formulaire -->
     <div class="panel-section">
       <h3>🏴 Plante ton drapeau</h3>
 
@@ -102,6 +143,9 @@ function openPanel(countryCode) {
 
   panel.classList.remove('hidden');
   document.getElementById('close-panel').onclick = () => panel.classList.add('hidden');
+
+  // Charge les vrais derniers inscrits
+  loadPanelSpots(countryCode);
 }
 
 function togglePremium(countryCode) {
