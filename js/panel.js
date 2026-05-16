@@ -1,39 +1,46 @@
-// js/panel.js
 function openPanel(countryCode) {
-  const data = countryData[countryCode]; // ← était mockData avant
+  const data = countryData[countryCode];
   const name = countryNames[countryCode] || countryCode;
   const panel = document.getElementById('side-panel');
   const content = document.getElementById('panel-content');
 
-  // Calcul état du pays
-  const isFull = data ? data.occupied >= data.total : false;
-  const warPrice = 12; // prix guerre 1 par défaut
+  const isFull   = data ? data.occupied >= data.total : false;
+  const warPrice = data ? data.warPrice : 12;
 
-  // Contenu du panel
+  const flags = [
+    {code:'FR',name:'🇫🇷 France'},{code:'BE',name:'🇧🇪 Belgique'},
+    {code:'MA',name:'🇲🇦 Maroc'},{code:'DZ',name:'🇩🇿 Algérie'},
+    {code:'TN',name:'🇹🇳 Tunisie'},{code:'PT',name:'🇵🇹 Portugal'},
+    {code:'IT',name:'🇮🇹 Italie'},{code:'ES',name:'🇪🇸 Espagne'},
+    {code:'DE',name:'🇩🇪 Allemagne'},{code:'GB',name:'🇬🇧 Royaume-Uni'},
+    {code:'NL',name:'🇳🇱 Pays-Bas'},{code:'PL',name:'🇵🇱 Pologne'},
+    {code:'TR',name:'🇹🇷 Turquie'},{code:'RO',name:'🇷🇴 Roumanie'},
+    {code:'SN',name:'🇸🇳 Sénégal'},{code:'CI',name:'🇨🇮 Côte d\'Ivoire'},
+    {code:'CM',name:'🇨🇲 Cameroun'},{code:'CD',name:'🇨🇩 Congo'},
+    {code:'BR',name:'🇧🇷 Brésil'},{code:'US',name:'🇺🇸 USA'},
+    {code:'CA',name:'🇨🇦 Canada'},{code:'MX',name:'🇲🇽 Mexique'},
+    {code:'CN',name:'🇨🇳 Chine'},{code:'JP',name:'🇯🇵 Japon'},
+    {code:'IN',name:'🇮🇳 Inde'},{code:'NG',name:'🇳🇬 Nigeria'},
+    {code:'GH',name:'🇬🇭 Ghana'},{code:'ML',name:'🇲🇱 Mali'},
+  ].sort((a,b) => a.name.localeCompare(b.name));
+
   content.innerHTML = `
-
-    <!-- En-tête pays -->
     <div class="panel-header">
       <h2>${name}</h2>
-      ${data ? `
-        <div class="panel-spots">
-          <span class="${isFull ? 'full' : 'available'}">
-            ${isFull ? '⚔️ PAYS PLEIN' : `${data.total - data.occupied} spots libres`}
-          </span>
-          <span class="spot-count">${data.occupied}/${data.total}</span>
-        </div>
-      ` : '<p class="no-data">Aucun spot planté — sois le premier !</p>'}
+      <div class="panel-spots">
+        <span class="${isFull ? 'full' : 'available'}">
+          ${isFull ? '⚔️ PAYS PLEIN' : `${data ? data.total - data.occupied : '?'} spots libres`}
+        </span>
+        <span class="spot-count">${data ? `${data.occupied}/${data.total}` : ''}</span>
+      </div>
     </div>
 
-    <!-- Barre de remplissage -->
     ${data ? `
     <div class="fill-bar-container">
       <div class="fill-bar" style="width:${Math.round(data.occupied/data.total*100)}%"></div>
-    </div>
-    ` : ''}
+    </div>` : ''}
 
-    <!-- Top nationalités -->
-    ${data ? `
+    ${data && data.topFlags.length > 0 ? `
     <div class="panel-section">
       <h3>🌍 Composition</h3>
       <div class="flag-composition">
@@ -47,53 +54,60 @@ function openPanel(countryCode) {
           </div>
         `).join('')}
       </div>
-    </div>
-    ` : ''}
+    </div>` : ''}
 
-    <!-- Occupants actuels -->
-    ${data ? `
+    <!-- Formulaire d'achat -->
     <div class="panel-section">
-      <h3>🏴 Occupants actuels</h3>
-      <div class="occupants-list">
-        ${data.topFlags.map((flag, i) => `
-          <div class="occupant">
-            <span>${flag}</span>
-            <span class="occupant-pseudo">Pseudo${i+1}</span>
-            ${i % 2 === 0 ? '<span class="premium-star">⭐</span>' : ''}
-          </div>
-        `).join('')}
-      </div>
-    </div>
-    ` : ''}
+      <h3>🏴 Plante ton drapeau</h3>
 
-    <!-- Message rassurant -->
+      <label class="form-label">Ton pays d'origine</label>
+      <select id="flag-select" class="form-select">
+        ${flags.map(f => `<option value="${f.code}">${f.name}</option>`).join('')}
+      </select>
+
+      <label class="form-label">Ton pseudo</label>
+      <input id="pseudo-input" class="form-input"
+             type="text" placeholder="Pseudo (max 20 car.)"
+             maxlength="20" />
+
+      ${!isFull ? `
+      <label class="form-label" id="social-label" style="display:none">
+        Lien réseau social
+      </label>
+      <input id="social-input" class="form-input"
+             type="text" placeholder="instagram.com/tonpseudo"
+             style="display:none" />
+      ` : ''}
+    </div>
+
     <p class="reassurance">
       💡 Si tu te fais écraser, tu peux toujours revenir surenchérir.
     </p>
 
-    <!-- Boutons d'action -->
     <div class="panel-actions">
       ${!isFull ? `
         <button class="btn-classic" onclick="buySpot('${countryCode}', 'classic')">
           🏴 Planter — 3€
         </button>
-        <button class="btn-premium" onclick="buySpot('${countryCode}', 'premium')">
+        <button class="btn-premium" onclick="togglePremium('${countryCode}')">
           ⭐ Planter + lien — 6€
         </button>
       ` : `
-        <button class="btn-war" onclick="buySpot('${countryCode}', 'war')">
+        <button class="btn-war" onclick="buySpot('${countryCode}', 'war1')">
           ⚔️ Écraser un spot — ${warPrice}€
         </button>
       `}
     </div>
-
   `;
 
-  // Ouvre le panel
   panel.classList.remove('hidden');
+  document.getElementById('close-panel').onclick = () => panel.classList.add('hidden');
+}
 
-  // Ferme au clic sur X
-  document.getElementById('close-panel').onclick = () => {
-    panel.classList.add('hidden');
-  };
+function togglePremium(countryCode) {
+  const socialLabel = document.getElementById('social-label');
+  const socialInput = document.getElementById('social-input');
+  if (socialLabel) socialLabel.style.display = 'block';
+  if (socialInput) socialInput.style.display = 'block';
+  buySpot(countryCode, 'premium');
 }
