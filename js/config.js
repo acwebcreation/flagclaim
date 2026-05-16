@@ -17,3 +17,4 @@ async function sbGet(table, params = '') {
 }
 
 var countryData = {};
+console.log('Config chargé ✅', SUPABASE_URL);

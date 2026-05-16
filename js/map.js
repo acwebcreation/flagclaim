@@ -46,7 +46,7 @@ const europeanCountries = [
 ];
 
 // Charge le SVG
-fetch('/flagclaim/assets/europe.svg')
+fetch('assets/europe.svg')
   .then(r => r.text())
   .then(svgContent => {
     document.getElementById('map-container').innerHTML = svgContent;
@@ -144,3 +144,48 @@ function initTooltip() {
     });
   });
 }
+function getFlagEmoji(code) {
+  if (!code) return '🏴';
+  return code.toUpperCase().split('').map(c =>
+    String.fromCodePoint(0x1F1E6 + c.charCodeAt(0) - 65)
+  ).join('');
+}
+
+async function loadCountryData() {
+  const countries = await sbGet('countries', 'select=*');
+  const spots = await sbGet('spots', 'select=country_code,flag_origin&status=eq.active');
+  if (countries) {
+    countries.forEach(country => {
+      const countrySpots = spots ? spots.filter(s => s.country_code === country.code) : [];
+      const flagCounts = {};
+      countrySpots.forEach(s => { flagCounts[s.flag_origin] = (flagCounts[s.flag_origin] || 0) + 1; });
+      const topFlags = Object.entries(flagCounts).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([f])=>getFlagEmoji(f));
+      countryData[country.code] = {
+        total: country.max_spots,
+        occupied: countrySpots.length,
+        topFlags: topFlags.length > 0 ? topFlags : [],
+        isFull: countrySpots.length >= country.max_spots,
+        warCount: country.war_count,
+        warPrice: country.current_war_price
+      };
+    });
+  }
+  console.log('countryData chargé ✅', countryData);
+}
+
+async function init() {
+  await loadCountryData();
+  fetch('assets/europe.svg')
+    .then(r => r.text())
+    .then(svgContent => {
+      document.getElementById('map-container').innerHTML = svgContent;
+      const svg = document.querySelector('#map-container svg');
+      svg.style.width = '100%';
+      svg.style.height = 'auto';
+      initCountries();
+      renderBadges();
+      initTooltip();
+    });
+}
+
+init();
