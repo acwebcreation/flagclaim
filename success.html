@@ -18,62 +18,103 @@
       <div class="success-icon" id="icon">⏳</div>
       <h2 id="title">Confirmation en cours...</h2>
       <p id="message">On vérifie ton paiement, ça prend quelques secondes.</p>
+      <div id="personal-link"></div>
       <a href="index.html" class="btn-back" id="btn-back" style="display:none">
-        👁️ Voir ma position sur la carte
+      👁️ Voir ma position sur la carte
       </a>
     </div>
   </div>
 
+
+
+
   <script>
-    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtoeHd6YXFnYXl4emp0Y3ZvZHFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4OTExMDcsImV4cCI6MjA5NDQ2NzEwN30.lg36RWmCusXr5T5QX1kLUw21NkYYIUgXCwQ8shLXGY4';
+  const SUPABASE_URL  = 'https://khxwzaqgayxzjtcvodqo.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtoeHd6YXFnYXl4emp0Y3ZvZHFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4OTExMDcsImV4cCI6MjA5NDQ2NzEwN30.lg36RWmCusXr5T5QX1kLUw21NkYYIUgXCwQ8shLXGY4';
 
-    async function verifyPayment() {
-      const params    = new URLSearchParams(window.location.search);
-      const sessionId = params.get('session');
+  async function verifyPayment() {
+    const params    = new URLSearchParams(window.location.search);
+    const sessionId = params.get('session');
 
-      if (!sessionId) {
-        document.getElementById('icon').textContent    = '❌';
-        document.getElementById('title').textContent   = 'Session introuvable';
-        document.getElementById('message').textContent = 'Retourne sur la carte et réessaie.';
-        return;
-      }
-
-      try {
-        const res = await fetch(
-          'https://khxwzaqgayxzjtcvodqo.supabase.co/functions/v1/bright-processor',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${SUPABASE_ANON}`
-            },
-            body: JSON.stringify({ sessionId })
-          }
-        );
-
-        const data = await res.json();
-
-        if (data.ok) {
-          document.getElementById('icon').textContent    = '🎉';
-          document.getElementById('title').textContent   = 'Ton drapeau est planté !';
-          document.getElementById('message').textContent = 'Il apparaît maintenant sur la carte.';
-          document.getElementById('btn-back').style.display = 'inline-block';
-        } else {
-          document.getElementById('icon').textContent    = '❌';
-          document.getElementById('title').textContent   = 'Erreur de confirmation';
-          document.getElementById('message').textContent = data.error || 'Contacte le support.';
-        }
-
-      } catch (err) {
-        document.getElementById('icon').textContent    = '❌';
-        document.getElementById('title').textContent   = 'Erreur réseau';
-        document.getElementById('message').textContent = 'Réessaie dans quelques instants.';
-        console.error(err);
-      }
+    if (!sessionId) {
+      document.getElementById('icon').textContent    = '❌';
+      document.getElementById('title').textContent   = 'Session introuvable';
+      document.getElementById('message').textContent = 'Retourne sur la carte et réessaie.';
+      return;
     }
 
-    verifyPayment();
-  </script>
+    try {
+      // Vérifie le paiement
+      const res = await fetch(
+        'https://khxwzaqgayxzjtcvodqo.supabase.co/functions/v1/bright-processor',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type':  'application/json',
+            'Authorization': `Bearer ${SUPABASE_ANON}`
+          },
+          body: JSON.stringify({ sessionId })
+        }
+      );
+
+      const data = await res.json();
+
+      if (data.ok) {
+        // Affiche le succès
+        document.getElementById('icon').textContent    = '🎉';
+        document.getElementById('title').textContent   = 'Ton drapeau est planté !';
+        document.getElementById('message').textContent = 'Il apparaît maintenant sur la carte.';
+        document.getElementById('btn-back').style.display = 'inline-block';
+
+        // Récupère les infos du spot depuis Supabase
+        const spotRes = await fetch(
+          `${SUPABASE_URL}/rest/v1/spots?stripe_session_id=eq.${sessionId}`,
+          {
+            headers: {
+              'apikey':        SUPABASE_ANON,
+              'Authorization': `Bearer ${SUPABASE_ANON}`
+            }
+          }
+        );
+        const spotData = await spotRes.json();
+
+        if (spotData && spotData[0]) {
+          const spot = spotData[0];
+
+          // Sauvegarde en localStorage
+          localStorage.setItem('flagclaim_user', JSON.stringify({
+            pseudo:    spot.pseudo,
+            flag:      spot.flag_origin,
+            country:   spot.country_code,
+            plantedAt: spot.planted_at
+          }));
+
+          // Lien personnel
+          const link = `${window.location.origin}/flagclaim/?pseudo=${spot.pseudo}`;
+          document.getElementById('personal-link').innerHTML = `
+            <p style="margin-top:15px; font-size:13px; color:#aaa">
+              Ton lien personnel :<br>
+              <a href="${link}" style="color:#E67E22">${link}</a>
+            </p>
+          `;
+        }
+
+      } else {
+        document.getElementById('icon').textContent    = '❌';
+        document.getElementById('title').textContent   = 'Erreur de confirmation';
+        document.getElementById('message').textContent = data.error || 'Contacte le support.';
+      }
+
+    } catch (err) {
+      document.getElementById('icon').textContent    = '❌';
+      document.getElementById('title').textContent   = 'Erreur réseau';
+      document.getElementById('message').textContent = 'Réessaie dans quelques instants.';
+      console.error(err);
+    }
+  }
+
+  verifyPayment();
+</script>
 
 </body>
 </html>

@@ -6,12 +6,34 @@
   <title>FlagClaim — Plante ton drapeau en Europe</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
+ 
   <header>
-    <h1>🏴 FlagClaim</h1>
-    <p>Plante ton drapeau. Défends ton territoire.</p>
-  </header>
+  <div class="nav-brand">
+    <span class="nav-logo">🏴</span>
+    <span class="nav-title">FlagClaim</span>
+  </div>
+  
+
+  <nav class="nav-links">
+    <a href="index.html" class="nav-link active">🗺️ Carte</a>
+    <a href="classements.html" class="nav-link">🏆 Classements</a>
+    <a href="historique.html" class="nav-link">📜 Historique</a>
+    <a href="#waitlist" class="nav-link">🌍 V2</a>
+  </nav>
+
+  <div class="nav-right">
+    <div class="nav-search">
+      <input type="text" id="search-pseudo" placeholder="🔍 Ton pseudo..." />
+      <button onclick="searchPseudo()">Chercher</button>
+    </div>
+    <div id="ma-position-btn" style="display:none">
+      <button class="btn-ma-position" onclick="goToMyPosition()">📍 Ma Position</button>
+    </div>
+  </div>
+</header>
 
   <section id="how-it-works">
     <div class="step">
@@ -47,6 +69,7 @@
 
   
   <script src="js/config.js"></script>
+  <script src="js/nav.js"></script>
   <script src="js/map.js"></script>
   <script src="js/panel.js"></script>
   <script src="js/payment.js"></script>

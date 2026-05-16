@@ -8,14 +8,97 @@ body {
   min-height: 100vh;
 }
 
+
+
+/* ===== NAVIGATION ===== */
 header {
-  text-align: center;
-  padding: 20px;
-  background: #1E3A5F;
+  display:          flex;
+  align-items:      center;
+  justify-content:  space-between;
+  padding:          12px 24px;
+  background:       #1E3A5F;
+  flex-wrap:        wrap;
+  gap:              10px;
 }
 
-header h1 { font-size: 2rem; }
-header p  { color: #aaaaaa; margin-top: 5px; }
+.nav-brand {
+  display:     flex;
+  align-items: center;
+  gap:         8px;
+}
+
+.nav-logo  { font-size: 1.5rem; }
+.nav-title { font-size: 1.3rem; font-weight: bold; color: white; }
+
+.nav-links {
+  display: flex;
+  gap:     16px;
+}
+
+.nav-link {
+  color:           #aaa;
+  text-decoration: none;
+  font-size:       14px;
+  padding:         6px 12px;
+  border-radius:   6px;
+  transition:      all 0.2s;
+}
+
+.nav-link:hover, .nav-link.active {
+  color:      white;
+  background: rgba(255,255,255,0.1);
+}
+
+.nav-right {
+  display:     flex;
+  align-items: center;
+  gap:         10px;
+}
+
+.nav-search { display: flex; gap: 6px; }
+
+.nav-search input {
+  background:    #0f1a2e;
+  border:        1px solid #1E3A5F;
+  border-radius: 6px;
+  color:         white;
+  padding:       6px 12px;
+  font-size:     13px;
+  width:         150px;
+}
+
+.nav-search button {
+  background:    #E67E22;
+  border:        none;
+  border-radius: 6px;
+  color:         white;
+  padding:       6px 12px;
+  cursor:        pointer;
+  font-size:     13px;
+}
+
+.btn-ma-position {
+  background:    #2ECC71;
+  border:        none;
+  border-radius: 6px;
+  color:         white;
+  padding:       6px 14px;
+  cursor:        pointer;
+  font-size:     13px;
+  font-weight:   bold;
+  animation:     pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.7; }
+}
+
+/* Mobile nav */
+@media (max-width: 768px) {
+  header        { flex-direction: column; align-items: flex-start; }
+  .nav-search input { width: 120px; }
+}
 
 #map-container {
   position: relative;
