@@ -143,6 +143,7 @@ async function init() {
       initCountries();
       renderBadges();
       initTooltip();
+      initRealtime();
     });
 }
 

@@ -330,3 +330,24 @@ header p  { color: #aaaaaa; margin-top: 5px; }
 .country-badge:hover {
   transform: translate(-50%, -50%) scale(1.1);
 }
+
+/* Notifications realtime */
+.notif {
+  position:      fixed;
+  bottom:        20px;
+  left:          50%;
+  transform:     translateX(-50%) translateY(100px);
+  background:    #E67E22;
+  color:         white;
+  padding:       12px 24px;
+  border-radius: 25px;
+  font-size:     14px;
+  font-weight:   bold;
+  z-index:       1000;
+  transition:    transform 0.4s ease;
+  white-space:   nowrap;
+}
+
+.notif-show {
+  transform: translateX(-50%) translateY(0);
+}
