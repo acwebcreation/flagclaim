@@ -81,5 +81,54 @@
   <script src="js/payment.js"></script>
   <script src="js/realtime.js"></script>
 
+  <!-- Section V2 -->
+<section id="waitlist">
+  <div class="waitlist-container">
+    <h2>🌍 Ton pays n'est pas encore sur la carte ?</h2>
+    <p>Inscris-toi — tu seras notifié en premier quand il ouvre.</p>
+
+    <div class="waitlist-form">
+      <select id="wl-flag" class="form-select">
+        <option value="">Ton drapeau d'origine</option>
+      </select>
+
+      <select id="wl-country" class="form-select">
+        <option value="">Pays où tu vis (hors Europe)</option>
+        <option value="MA">🇲🇦 Maroc</option>
+        <option value="DZ">🇩🇿 Algérie</option>
+        <option value="TN">🇹🇳 Tunisie</option>
+        <option value="US">🇺🇸 USA</option>
+        <option value="CA">🇨🇦 Canada</option>
+        <option value="BR">🇧🇷 Brésil</option>
+        <option value="AU">🇦🇺 Australie</option>
+        <option value="JP">🇯🇵 Japon</option>
+        <option value="CN">🇨🇳 Chine</option>
+        <option value="SN">🇸🇳 Sénégal</option>
+        <option value="CI">🇨🇮 Côte d'Ivoire</option>
+        <option value="CM">🇨🇲 Cameroun</option>
+        <option value="NG">🇳🇬 Nigeria</option>
+        <option value="GH">🇬🇭 Ghana</option>
+        <option value="MX">🇲🇽 Mexique</option>
+        <option value="AR">🇦🇷 Argentine</option>
+        <option value="ZA">🇿🇦 Afrique du Sud</option>
+        <option value="OTHER">🌍 Autre pays</option>
+      </select>
+
+      <input id="wl-email" type="email" class="form-input"
+             placeholder="Ton email" />
+
+      <button class="btn-waitlist" onclick="joinWaitlist()">
+        M'inscrire sur la liste d'attente
+      </button>
+    </div>
+
+    <div id="wl-counters" class="wl-counters">
+      <!-- Compteurs par pays -->
+    </div>
+
+    <div id="wl-message"></div>
+  </div>
+</section>
+
 </body>
 </html>
