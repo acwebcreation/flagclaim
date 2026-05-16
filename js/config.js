@@ -16,6 +16,12 @@ async function sbGet(table, params = '') {
   return res.json();
 }
 
+
+function getFlagEmoji(code) {
+  if (!code) return '<span class="fi fi-xx"></span>';
+  return `<span class="fi fi-${code.toLowerCase()}"></span>`;
+}
+
 var countryData = {};
 console.log('countryData chargé ✅', countryData);
 console.log('IS occupé :', countryData['IS']?.occupied);
