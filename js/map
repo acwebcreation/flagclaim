@@ -40,6 +40,7 @@ const europeanCountries = [
 // Données réelles chargées depuis Supabase
 let countryData = {};
 
+
 // Charge les données et initialise la carte
 async function init() {
   await loadCountryData();
@@ -57,15 +58,15 @@ async function init() {
     });
 }
 
-// Charge les données depuis Supabase
+// Charge les données depuis Supabase(db)
 async function loadCountryData() {
   // Charge la config des pays (max spots, war_count, prix)
-  const { data: countries } = await supabase
+  const { data: countries } = await db
     .from('countries')
     .select('*');
 
   // Charge les spots actifs groupés par pays
-  const { data: spots } = await supabase
+  const { data: spots } = await db
     .from('spots')
     .select('country_code, flag_origin')
     .eq('status', 'active');
