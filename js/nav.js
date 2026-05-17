@@ -113,6 +113,7 @@ async function loadAmbassadeurs() {
   const countRes = await sbGet('spots',
     'select=id&status=eq.active&has_link=eq.true'
   );
+  
   const total = countRes ? countRes.length : 0;
   if (total === 0) return;
 
