@@ -742,3 +742,86 @@ header {
 }
 
 .faq-answer[style*="max-height"] { padding-bottom: 14px; }
+
+/* ===== QUICK CARDS ===== */
+.quick-cards {
+  display:   grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:       12px;
+  margin-bottom: 24px;
+}
+
+.quick-card {
+  background:    #1a2540;
+  border-radius: 10px;
+  padding:       16px;
+  text-align:    center;
+  border:        1px solid #1E3A5F;
+}
+
+.quick-icon  { font-size: 28px; margin-bottom: 8px; }
+.quick-title { font-weight: bold; color: #E67E22; margin-bottom: 6px; }
+.quick-text  { font-size: 12px; color: #aaa; line-height: 1.5; }
+
+/* ===== PRICE GRID ===== */
+.price-grid {
+  display:   grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:       10px;
+  margin-bottom: 12px;
+}
+
+.price-item {
+  border-radius: 8px;
+  padding:       14px;
+  text-align:    center;
+}
+
+.price-classic { background: rgba(30,58,95,0.5);  border: 1px solid #1E3A5F; }
+.price-premium { background: rgba(230,126,34,0.2); border: 1px solid #E67E22; }
+.price-war     { background: rgba(231,76,60,0.15);  border: 1px solid #E74C3C; }
+.price-legend  { background: rgba(241,196,15,0.15); border: 1px solid #F1C40F; }
+
+.price-label  { font-size: 11px; color: #aaa; margin-bottom: 4px; }
+.price-amount { font-size: 22px; font-weight: bold; color: white; margin-bottom: 4px; }
+.price-desc   { font-size: 11px; color: #888; }
+.price-note   { font-size: 12px; color: #E74C3C; margin-top: 8px; }
+
+/* ===== BADGE GRID ===== */
+.badge-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.badge-explain {
+  background:    #0f1a2e;
+  border-radius: 8px;
+  padding:       16px;
+  text-align:    center;
+}
+
+.badge-icon { font-size: 30px; margin-bottom: 8px; }
+.badge-name { font-weight: bold; color: #E67E22; margin-bottom: 6px; }
+.badge-desc { font-size: 12px; color: #aaa; line-height: 1.5; }
+
+/* ===== CONTACT ===== */
+.faq-contact {
+  display:       flex;
+  align-items:   center;
+  gap:           10px;
+  background:    #1a2540;
+  border-radius: 10px;
+  padding:       16px 20px;
+  font-size:     14px;
+  color:         #aaa;
+}
+
+.faq-contact a { color: #E67E22; }
+
+/* Mobile FAQ */
+@media (max-width: 768px) {
+  .quick-cards  { grid-template-columns: repeat(2, 1fr); }
+  .price-grid   { grid-template-columns: repeat(2, 1fr); }
+  .badge-grid   { grid-template-columns: 1fr; }
+}
