@@ -885,3 +885,94 @@ header {
   color:      #555;
   margin-top: 6px;
 }
+
+/* ===== TICKER ===== */
+#activity-ticker {
+  display:     flex;
+  align-items: center;
+  gap:         12px;
+  background:  #111827;
+  padding:     8px 20px;
+  overflow:    hidden;
+  border-bottom: 1px solid #1E3A5F;
+}
+
+.ticker-label {
+  color:        #E67E22;
+  font-weight:  bold;
+  font-size:    11px;
+  white-space:  nowrap;
+  flex-shrink:  0;
+}
+
+.ticker-track {
+  flex:     1;
+  overflow: hidden;
+}
+
+.ticker-content {
+  display:   flex;
+  gap:       40px;
+  animation: ticker 30s linear infinite;
+  white-space: nowrap;
+}
+
+.ticker-item {
+  font-size:  13px;
+  color:      #aaa;
+  flex-shrink: 0;
+}
+
+.ticker-item strong { color: white; }
+
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+#ambassadeurs-section {
+  background:  #0d1525;
+  padding:     16px 20px;
+  border-bottom: 1px solid #1E3A5F;
+}
+
+.amb-header {
+  display:       flex;
+  align-items:   baseline;
+  gap:           12px;
+  margin-bottom: 12px;
+}
+
+.amb-title {
+  font-size:  13px;
+  color:      #E67E22;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.amb-sub {
+  font-size: 11px;
+  color:     #555;
+  font-style: italic;
+}
+
+.amb-grid {
+  display:   flex;
+  gap:       10px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.amb-card {
+  background:  #1a2540;
+  border:      1px solid #1E3A5F;
+  border-radius: 10px;
+  padding:     12px 14px;
+  min-width:   160px;
+  max-width:   180px;
+  flex-shrink: 0;
+  transition:  border-color 0.2s;
+}
+
+.amb-card:hover { border-color: #E67E22; }

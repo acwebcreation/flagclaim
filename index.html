@@ -32,7 +32,7 @@
       <button onclick="searchPseudo()">Chercher</button>
     </div>
     <div id="ma-position-btn" style="display:none">
-      <button class="btn-ma-position" onclick="goToMyPosition()">📍 Ma Position</button>
+        <button class="btn-ma-position" onclick="goToMyPosition()">📍 Ma Position</button>
     </div>
   </div>
 </header>
@@ -63,13 +63,23 @@
 
   <main>
     
-    <div id="map-container"></div>
-    <div id="activity-feed">
+
+    
+    
+    <!-- <div id="activity-feed">
         <div class="activity-title">⚡ Dernière activité</div>
         <div id="activity-list">
             <div class="activity-item">Chargement...</div>
         </div>
-    </div>
+    </div> -->
+
+      <div id="activity-ticker">
+        <span class="ticker-label">⚡ LIVE</span>
+        <div class="ticker-track">
+          <div id="ticker-content" class="ticker-content"></div>
+        </div>
+      </div>
+
     <div id="ambassadeurs-section">
         <div class="amb-title">⭐ La Communauté FlagClaim</div>
         <div id="ambassadeurs-list" class="amb-grid"></div>
@@ -78,6 +88,8 @@
       <button id="close-panel">✕</button>
       <div id="panel-content"></div>
     </div>
+
+    <div id="map-container"></div>
   </main>
 
   

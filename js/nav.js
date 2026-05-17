@@ -43,30 +43,26 @@ if (urlPseudo) {
 }
 
 // Widget dernière activité
+
 async function loadActivityFeed() {
-  const spots = await sbGet(
-    'spots',
-    'select=pseudo,flag_origin,country_code,planted_at&status=eq.active&order=planted_at.desc&limit=5'
+  const ticker = document.getElementById('ticker-content');
+  if (!ticker) return;
+
+  const spots = await sbGet('spots',
+    'select=pseudo,flag_origin,country_code,planted_at&status=eq.active&order=planted_at.desc&limit=8'
   );
 
-  const list = document.getElementById('activity-list');
-  if (!list) return;
+  if (!spots || spots.length === 0) return;
 
-  if (!spots || spots.length === 0) {
-    list.innerHTML = '<div class="activity-item">Sois le premier à planter !</div>';
-    return;
-  }
-
-  list.innerHTML = spots.map(spot => {
+  const items = spots.map(spot => {
     const flag    = getFlagEmoji(spot.flag_origin);
     const country = countryNames[spot.country_code] || spot.country_code;
     const time    = timeAgo(spot.planted_at);
-    return `<div class="activity-item">
-      ${flag} <strong>${spot.pseudo || 'Anonyme'}</strong>
-      a planté en <strong>${country}</strong>
-      <span style="color:#666; float:right">${time}</span>
-    </div>`;
+    return `<span class="ticker-item">${flag} <strong>${spot.pseudo || 'Anonyme'}</strong> a planté en <strong>${country}</strong> — ${time}</span>`;
   }).join('');
+
+  // Double le contenu pour un défilement infini fluide
+  ticker.innerHTML = items + items;
 }
 
 function timeAgo(dateStr) {
