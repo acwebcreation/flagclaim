@@ -106,17 +106,6 @@ async function loadWaitlistFlags() {
   });
 }
 
-//charge les ambassadeurs
-  const spots = await sbGet('spots',
-    'select=pseudo,flag_origin,country_code,social_url,tagline,planted_at&status=eq.active&has_link=eq.true&order=planted_at.desc&limit=20'
-  );
-
-  if (!spots || spots.length === 0) {
-    container.innerHTML = '<p style="color:#555; font-size:13px">Aucun ambassadeur pour le moment.</p>';
-    return;
-  }
- 
-
 async function loadAmbassadeurs() {
   const container = document.getElementById('ambassadeurs-list');
   if (!container) return;
