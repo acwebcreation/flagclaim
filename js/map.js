@@ -11,10 +11,10 @@ const centroids = {
   SI: { x: 56, y: 54 }, RS: { x: 71, y: 59 }, BG: { x: 79, y: 62 },
   UA: { x: 79, y: 46 }, BY: { x: 70, y: 38 }, MD: { x: 82, y: 53 },
   LT: { x: 69, y: 33 }, LV: { x: 70, y: 29 }, EE: { x: 70, y: 25 },
-  AL: { x: 69, y: 67 }, MK: { x: 71, y: 65 }, BA: { x: 68, y: 60 },
+  AL: { x: 74, y: 67 }, MK: { x: 71, y: 65 }, BA: { x: 68, y: 60 },
   ME: { x: 69, y: 63 }, IE: { x: 32, y: 38 }, LU: { x: 51, y: 45 },
   MT: { x: 58, y: 82 }, CY: { x: 74, y: 80 }, IS: { x: 17, y: 14 },
-  TR: { x: 78, y: 68 }, XK: { x: 63, y: 63 }
+  TR: { x: 84, y: 68 }, XK: { x: 76, y: 63 }
 };
 
 const countryNames = {
