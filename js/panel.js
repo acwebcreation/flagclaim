@@ -119,14 +119,14 @@ function openPanel(countryCode) {
              type="text" placeholder="instagram.com/tonpseudo"
              style="display:none" />
       <label class="form-label" id="tagline-label" style="display:none">
-         Ta description courte (ex: Designer freelance, Passionné de voyage...)
+         Ton métier ou nom de boutique (optionnel)
       </label>
       <input id="tagline-input" class="form-input"
-            type="text" placeholder="20 mots max"
+            type="text" placeholder=""Ex: Coiffeur à Bruxelles, Boutique Karim..."
             maxlength="60" style="display:none" />
         ` : ''}
-
     </div>
+
 
 
     <p class="reassurance">

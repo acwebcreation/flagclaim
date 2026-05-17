@@ -957,12 +957,6 @@ header {
   font-style: italic;
 }
 
-.amb-grid {
-  display:   flex;
-  gap:       10px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-}
 
 .amb-card {
   background:  #1a2540;
@@ -976,3 +970,28 @@ header {
 }
 
 .amb-card:hover { border-color: #E67E22; }
+.amb-new {
+  font-size:     10px;
+  background:    #2ECC71;
+  color:         white;
+  padding:       2px 6px;
+  border-radius: 10px;
+  margin-bottom: 4px;
+  display:       inline-block;
+}
+
+
+.amb-grid {
+  display:               grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap:                   10px;
+  overflow-x:            auto;
+}
+
+@media (max-width: 900px) {
+  .amb-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .amb-grid { grid-template-columns: repeat(2, 1fr); }
+}

@@ -107,10 +107,6 @@ async function loadWaitlistFlags() {
 }
 
 //charge les ambassadeurs
-async function loadAmbassadeurs() {
-  const container = document.getElementById('ambassadeurs-list');
-  if (!container) return;
-
   const spots = await sbGet('spots',
     'select=pseudo,flag_origin,country_code,social_url,tagline,planted_at&status=eq.active&has_link=eq.true&order=planted_at.desc&limit=20'
   );
@@ -119,16 +115,41 @@ async function loadAmbassadeurs() {
     container.innerHTML = '<p style="color:#555; font-size:13px">Aucun ambassadeur pour le moment.</p>';
     return;
   }
+ 
+
+async function loadAmbassadeurs() {
+  const container = document.getElementById('ambassadeurs-list');
+  if (!container) return;
+
+  const countRes = await sbGet('spots',
+    'select=id&status=eq.active&has_link=eq.true'
+  );
+  const total = countRes ? countRes.length : 0;
+  if (total === 0) return;
+
+  const offset = total > 6 ? Math.floor(Math.random() * (total - 6)) : 0;
+
+  const spots = await sbGet('spots',
+    `select=pseudo,flag_origin,country_code,social_url,tagline,planted_at&status=eq.active&has_link=eq.true&limit=6&offset=${offset}`
+  );
+
+  if (!spots || spots.length === 0) return;
 
   container.innerHTML = spots.map(spot => {
     const flag    = getFlagEmoji(spot.flag_origin);
     const country = countryNames[spot.country_code] || spot.country_code;
     const days    = Math.floor((Date.now() - new Date(spot.planted_at)) / 86400000);
-    const link    = spot.social_url ? `<a href="https://${spot.social_url}" target="_blank" class="amb-link">🔗 ${spot.social_url}</a>` : '';
-    const tagline = spot.tagline ? `<div class="amb-tagline">${spot.tagline}</div>` : '';
+    const isNew   = days === 0;
+    const link    = spot.social_url
+      ? `<a href="https://${spot.social_url}" target="_blank" class="amb-link">🔗 ${spot.social_url}</a>`
+      : '';
+    const tagline = spot.tagline
+      ? `<div class="amb-tagline">💼 ${spot.tagline}</div>`
+      : '';
 
     return `
       <div class="amb-card">
+        ${isNew ? '<span class="amb-new">🆕 Nouveau</span>' : ''}
         <div class="amb-flag">${flag}</div>
         <div class="amb-pseudo">${spot.pseudo || 'Anonyme'}</div>
         ${tagline}
