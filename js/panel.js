@@ -174,25 +174,32 @@ function togglePremium(countryCode) {
     btnPremium.onclick = () => validateAndBuy(countryCode, 'premium');
   }
 }
-function validateAndBuy(countryCode, type) {
+async function validateAndBuy(countryCode, type) {
   const pseudo = document.getElementById('pseudo-input')?.value.trim();
   const social = document.getElementById('social-input')?.value.trim();
 
-  // Pseudo obligatoire pour tous
   if (!pseudo) {
     showFieldError('pseudo-input', 'Le pseudo est obligatoire');
     return;
   }
 
-  // Lien obligatoire pour premium
   if (type === 'premium' && !social) {
     showFieldError('social-input', 'Le lien réseau social est obligatoire');
     return;
   }
 
-  // Valide le format du lien
   if (social && !social.includes('.')) {
     showFieldError('social-input', 'Lien invalide — ex: instagram.com/tonpseudo');
+    return;
+  }
+
+  // Vérifie si pseudo déjà pris dans ce pays
+  const existing = await sbGet('spots',
+    `select=id&pseudo=eq.${pseudo}&country_code=eq.${countryCode}&status=eq.active`
+  );
+
+  if (existing && existing.length > 0) {
+    showFieldError('pseudo-input', 'Ce pseudo existe déjà dans ce pays — choisis-en un autre');
     return;
   }
 
