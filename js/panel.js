@@ -118,8 +118,16 @@ function openPanel(countryCode) {
       <input id="social-input" class="form-input"
              type="text" placeholder="instagram.com/tonpseudo"
              style="display:none" />
-      ` : ''}
+      <label class="form-label" id="tagline-label" style="display:none">
+         Ta description courte (ex: Designer freelance, Passionné de voyage...)
+      </label>
+      <input id="tagline-input" class="form-input"
+            type="text" placeholder="20 mots max"
+            maxlength="60" style="display:none" />
+        ` : ''}
+
     </div>
+
 
     <p class="reassurance">
       💡 Si tu te fais écraser, tu peux toujours revenir surenchérir.
@@ -151,20 +159,21 @@ function openPanel(countryCode) {
 
 
 function togglePremium(countryCode) {
-  const socialLabel = document.getElementById('social-label');
-  const socialInput = document.getElementById('social-input');
-  const btnPremium  = document.querySelector('.btn-premium');
+  const socialLabel  = document.getElementById('social-label');
+  const socialInput  = document.getElementById('social-input');
+  const taglineLabel = document.getElementById('tagline-label');
+  const taglineInput = document.getElementById('tagline-input');
+  if (socialLabel)  socialLabel.style.display  = 'block';
+  if (socialInput)  socialInput.style.display  = 'block';
+  if (taglineLabel) taglineLabel.style.display = 'block';
+  if (taglineInput) taglineInput.style.display = 'block';
 
-  if (socialLabel) socialLabel.style.display = 'block';
-  if (socialInput) socialInput.style.display = 'block';
-
-  // Remplace le bouton par "Confirmer"
+  const btnPremium = document.querySelector('.btn-premium');
   if (btnPremium) {
     btnPremium.textContent = '✅ Confirmer — 6€';
     btnPremium.onclick = () => validateAndBuy(countryCode, 'premium');
   }
 }
-
 function validateAndBuy(countryCode, type) {
   const pseudo = document.getElementById('pseudo-input')?.value.trim();
   const social = document.getElementById('social-input')?.value.trim();

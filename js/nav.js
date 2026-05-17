@@ -110,6 +110,39 @@ async function loadWaitlistFlags() {
   });
 }
 
+//charge les ambassadeurs
+async function loadAmbassadeurs() {
+  const container = document.getElementById('ambassadeurs-list');
+  if (!container) return;
+
+  const spots = await sbGet('spots',
+    'select=pseudo,flag_origin,country_code,social_url,tagline,planted_at&status=eq.active&has_link=eq.true&order=planted_at.desc&limit=20'
+  );
+
+  if (!spots || spots.length === 0) {
+    container.innerHTML = '<p style="color:#555; font-size:13px">Aucun ambassadeur pour le moment.</p>';
+    return;
+  }
+
+  container.innerHTML = spots.map(spot => {
+    const flag    = getFlagEmoji(spot.flag_origin);
+    const country = countryNames[spot.country_code] || spot.country_code;
+    const days    = Math.floor((Date.now() - new Date(spot.planted_at)) / 86400000);
+    const link    = spot.social_url ? `<a href="https://${spot.social_url}" target="_blank" class="amb-link">🔗 ${spot.social_url}</a>` : '';
+    const tagline = spot.tagline ? `<div class="amb-tagline">${spot.tagline}</div>` : '';
+
+    return `
+      <div class="amb-card">
+        <div class="amb-flag">${flag}</div>
+        <div class="amb-pseudo">${spot.pseudo || 'Anonyme'}</div>
+        ${tagline}
+        ${link}
+        <div class="amb-meta">${country} · ${days}j</div>
+      </div>
+    `;
+  }).join('');
+}
+
 // Charge les compteurs par pays
 async function loadWaitlistCounters() {
   const container = document.getElementById('wl-counters');
@@ -196,4 +229,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(loadActivityFeed, 30000);
   loadWaitlistFlags();
   loadWaitlistCounters();
+  loadAmbassadeurs();
+  setInterval(loadAmbassadeurs, 60000); // Rafraîchit toutes les minutes
 });

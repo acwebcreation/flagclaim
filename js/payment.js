@@ -2,9 +2,9 @@
 async function buySpot(countryCode, type) {
   const flagSelect  = document.getElementById('flag-select');
   const pseudoInput = document.getElementById('pseudo-input');
-
   const flagOrigin = flagSelect  ? flagSelect.value       : 'FR';
   const pseudo     = pseudoInput ? pseudoInput.value || 'Anonyme' : 'Anonyme';
+  const tagline = document.getElementById('tagline-input')?.value.trim() || '';
 
   try {
     const res = await fetch(
@@ -15,7 +15,7 @@ async function buySpot(countryCode, type) {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${SUPABASE_ANON}`
         },
-        body: JSON.stringify({ countryCode, flagOrigin, pseudo, type })
+        body: JSON.stringify({ countryCode, flagOrigin, pseudo, type, tagline })
       }
     );
 
