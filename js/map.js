@@ -106,20 +106,42 @@ function initTooltip() {
 
 async function loadCountryData() {
   const countries = await sbGet('countries', 'select=*');
-  const spots = await sbGet('spots', 'select=country_code,flag_origin&status=eq.active');
+  const spots     = await sbGet('spots',
+    'select=country_code,flag_origin,war_count&status=eq.active'
+  );
+
+  const warPrices = [12, 18, 25, 35, 50];
+
   if (countries) {
     countries.forEach(country => {
-      const countrySpots = spots ? spots.filter(s => s.country_code === country.code) : [];
+      const countrySpots = spots
+        ? spots.filter(s => s.country_code === country.code)
+        : [];
+
       const flagCounts = {};
-      countrySpots.forEach(s => { flagCounts[s.flag_origin] = (flagCounts[s.flag_origin] || 0) + 1; });
-      const topFlags = Object.entries(flagCounts).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([f])=>getFlagEmoji(f));
+      countrySpots.forEach(s => {
+        flagCounts[s.flag_origin] = (flagCounts[s.flag_origin] || 0) + 1;
+      });
+
+      const topFlags = Object.entries(flagCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3)
+        .map(([flag]) => getFlagEmoji(flag));
+
+      // Prix minimum disponible = spot avec war_count le plus bas
+      const minWarCount = countrySpots.length > 0
+        ? Math.min(...countrySpots.map(s => s.war_count || 0))
+        : 0;
+      const minWarPrice = warPrices[Math.min(minWarCount, 4)];
+
       countryData[country.code] = {
-        total: country.max_spots,
-        occupied: countrySpots.length,
-        topFlags: topFlags.length > 0 ? topFlags : [],
-        isFull: countrySpots.length >= country.max_spots,
-        warCount: country.war_count,
-        warPrice: country.current_war_price
+        total:      country.max_spots,
+        occupied:   countrySpots.length,
+        topFlags:   topFlags.length > 0 ? topFlags : [],
+        flagCounts: flagCounts,
+        isFull:     countrySpots.length >= country.max_spots,
+        warCount:   country.war_count,
+        warPrice:   minWarPrice
       };
     });
   }

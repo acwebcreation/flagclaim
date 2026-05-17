@@ -24,10 +24,9 @@
   </header>
 
   <main class="page-content">
-
     <h1 class="page-title">❓ Aide & FAQ</h1>
 
-    <!-- Résumé rapide en cards -->
+    <!-- Résumé rapide -->
     <div class="quick-cards">
       <div class="quick-card">
         <div class="quick-icon">🏴</div>
@@ -51,7 +50,7 @@
       </div>
     </div>
 
-    <!-- Grille des prix -->
+    <!-- Prix -->
     <div class="faq-section">
       <h2>💶 Les prix</h2>
       <div class="price-grid">
@@ -68,35 +67,60 @@
         <div class="price-item price-war">
           <div class="price-label">⚔️ Guerre 1</div>
           <div class="price-amount">12€</div>
-          <div class="price-desc">Écraser + Premium auto</div>
+          <div class="price-desc">Premium auto</div>
         </div>
         <div class="price-item price-war">
           <div class="price-label">⚔️ Guerre 2</div>
           <div class="price-amount">18€</div>
-          <div class="price-desc">Écraser + Premium auto</div>
+          <div class="price-desc">Premium auto</div>
         </div>
         <div class="price-item price-war">
           <div class="price-label">⚔️ Guerre 3</div>
           <div class="price-amount">25€</div>
-          <div class="price-desc">Écraser + Premium auto</div>
+          <div class="price-desc">Premium auto</div>
         </div>
         <div class="price-item price-war">
           <div class="price-label">⚔️ Guerre 4</div>
           <div class="price-amount">35€</div>
-          <div class="price-desc">Écraser + Premium auto</div>
+          <div class="price-desc">Premium auto</div>
         </div>
         <div class="price-item price-legend">
           <div class="price-label">👑 Plafond</div>
           <div class="price-amount">50€</div>
-          <div class="price-desc">Maximum — illimité en guerres</div>
+          <div class="price-desc">Maximum — guerres illimitées</div>
         </div>
       </div>
-      <p class="price-note">⚠️ Les paliers sont obligatoires — impossible de sauter directement à 50€</p>
     </div>
 
-    <!-- FAQ accordéon -->
+    <!-- FAQ -->
     <div class="faq-section">
       <h2>🙋 Questions fréquentes</h2>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>Comment planter mon drapeau ?</span>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-answer">
+          1. Clique sur le pays où tu vis<br>
+          2. Choisis ton drapeau d'origine<br>
+          3. Entre ton pseudo<br>
+          4. Choisis Classique (3€) ou Premium (6€)<br>
+          5. Paie par carte ou PayPal → ton drapeau apparaît immédiatement !
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>Comment fonctionne le prix d'écrasement ?</span>
+          <span class="faq-arrow">▼</span>
+        </div>
+        <div class="faq-answer">
+          Quand un pays est plein, tu paies le prix du <strong>spot le moins cher disponible</strong>.<br><br>
+          Chaque spot a son propre historique de guerres : 12€ → 18€ → 25€ → 35€ → 50€ max.<br><br>
+          Si tous les spots disponibles sont à 18€ minimum, tu paies 18€ — même si tu n'avais payé que 6€ avant. Le prix dépend du marché, pas de ton historique.
+        </div>
+      </div>
 
       <div class="faq-item">
         <div class="faq-question" onclick="toggleFaq(this)">
@@ -104,30 +128,17 @@
           <span class="faq-arrow">▼</span>
         </div>
         <div class="faq-answer">
-          Tu reçois un <strong>email immédiat</strong> avec un lien pour revenir. Ton drapeau rejoint le <strong>Hall of Fame</strong> avec ta durée de survie. Tu peux replanter au palier suivant.
+          Tu reçois un <strong>email immédiat</strong> avec un lien pour revenir. Ton drapeau rejoint le <strong>Hall of Fame</strong> avec ta durée de survie. Tu peux replanter au prix du spot le moins cher disponible.
         </div>
       </div>
 
       <div class="faq-item">
         <div class="faq-question" onclick="toggleFaq(this)">
-          <span>Que se passe-t-il si personne n'attaque pendant longtemps ?</span>
+          <span>Puis-je planter dans plusieurs pays ?</span>
           <span class="faq-arrow">▼</span>
         </div>
         <div class="faq-answer">
-          <strong>14 jours</strong> sans attaque → le prix descend d'un palier<br>
-          <strong>30 jours</strong> sans attaque → le spot est libéré à 3€
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(this)">
-          <span>Puis-je avoir plusieurs spots ?</span>
-          <span class="faq-arrow">▼</span>
-        </div>
-        <div class="faq-answer">
-          Oui ! Plusieurs pays différents sans limite.<br>
-          Maximum <strong>2 spots</strong> dans les petits pays (Luxembourg, Malte, Chypre, Islande)<br>
-          Maximum <strong>5 spots</strong> dans les grands pays
+          Oui — tu peux avoir un spot dans autant de pays que tu veux. Chaque pays est indépendant.
         </div>
       </div>
 
@@ -168,19 +179,19 @@
       <h2>🏅 Badges spéciaux</h2>
       <div class="badge-grid">
         <div class="badge-explain">
-          <div class="badge-icon">👑</div>
-          <div class="badge-name">Conquérant</div>
-          <div class="badge-desc">Possède TOUS les spots d'un pays en même temps</div>
-        </div>
-        <div class="badge-explain">
           <div class="badge-icon">🔥</div>
           <div class="badge-name">Indestructible</div>
-          <div class="badge-desc">Revient à chaque palier jusqu'au plafond 50€</div>
+          <div class="badge-desc">Revient à chaque palier jusqu'au plafond 50€ sur le même spot</div>
         </div>
         <div class="badge-explain">
           <div class="badge-icon">⚔️</div>
           <div class="badge-name">Guerrier</div>
           <div class="badge-desc">A écrasé quelqu'un à chaque palier jusqu'au plafond</div>
+        </div>
+        <div class="badge-explain">
+          <div class="badge-icon">📜</div>
+          <div class="badge-name">Légende</div>
+          <div class="badge-desc">Record de survie dans un pays — visible dans le Hall of Fame</div>
         </div>
       </div>
     </div>
