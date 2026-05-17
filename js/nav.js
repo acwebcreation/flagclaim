@@ -41,7 +41,7 @@ async function goToMyPosition() {
     const country = countryNames[spot.country_code] || spot.country_code;
     const days    = Math.floor((Date.now() - new Date(spot.planted_at)) / 86400000);
     const warPrices = [12, 18, 25, 35, 50];
-    const nextPrice = warPrices[Math.min((spot.war_count || 0) + 1, 4)];
+   const nextPrice = warPrices[Math.min(spot.war_count || 0, 4)];
 
     return `
       <div class="my-spot-card">
@@ -109,7 +109,7 @@ async function searchPseudo() {
     const country = countryNames[spot.country_code] || spot.country_code;
     const days    = Math.floor((Date.now() - new Date(spot.planted_at)) / 86400000);
     const warPrices = [12, 18, 25, 35, 50];
-    const nextPrice = warPrices[Math.min((spot.war_count || 0) + 1, 4)];
+    const nextPrice = warPrices[Math.min(spot.war_count || 0, 4)];
     const isActive  = spot.status === 'active';
 
     return `
