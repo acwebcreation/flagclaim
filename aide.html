@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlagClaim — Aide & FAQ</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css">
+</head>
+<body>
+
+  <header>
+    <div class="nav-brand">
+      <span class="nav-logo">🏴</span>
+      <span class="nav-title">FlagClaim</span>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html" class="nav-link">🗺️ Carte</a>
+      <a href="classements.html" class="nav-link">🏆 Classements</a>
+      <a href="historique.html" class="nav-link">📜 Historique</a>
+      <a href="index.html#waitlist" class="nav-link">🌍 V2</a>
+      <a href="aide.html" class="nav-link active">❓ Aide</a>
+    </nav>
+  </header>
+
+  <main class="page-content">
+
+    <h1 class="page-title">❓ Aide & FAQ</h1>
+
+    <div class="faq-container">
+
+      <div class="faq-section">
+        <h2>🏴 Les bases</h2>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            C'est quoi FlagClaim ? <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            FlagClaim est une carte interactive de l'Europe où tu plantes ton drapeau d'origine sur le pays où tu vis. Les spots sont limités par pays — quand un pays est plein, il faut écraser quelqu'un pour entrer. Le dernier à tenir le plus longtemps entre dans le Hall of Fame.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            Combien ça coûte ? <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            <strong>Spot Classique — 3€</strong> : ton drapeau + ton pseudo sur la carte.<br><br>
+            <strong>Spot Premium — 6€</strong> : drapeau + pseudo + lien vers ton réseau social (Instagram, TikTok...).<br><br>
+            Si le pays est plein, tu peux écraser quelqu'un à partir de <strong>12€</strong>. Le prix augmente progressivement : 12€ → 18€ → 25€ → 35€ → 50€ maximum.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            Comment planter mon drapeau ? <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            1. Clique sur le pays où tu vis sur la carte<br>
+            2. Choisis ton drapeau d'origine dans la liste<br>
+            3. Entre ton pseudo<br>
+            4. Choisis Classique (3€) ou Premium (6€)<br>
+            5. Paie par carte bancaire ou PayPal<br>
+            6. Ton drapeau apparaît immédiatement sur la carte !
+          </div>
+        </div>
+
+      </div>
+
+      <div class="faq-section">
+        <h2>⚔️ Les guerres</h2>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            Que se passe-t-il quand je me fais écraser ? <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            Tu reçois un email immédiatement. Ton drapeau quitte la carte mais tu rejoins le <strong>Hall of Fame</strong> avec ta durée de survie. Tu peux revenir et récupérer ton spot en payant le palier suivant.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            Puis-je récupérer mon spot si je me fais écraser ? <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            Oui ! C'est même le principe du jeu. Tu reçois un email avec un lien direct pour revenir. Le prix dépend du palier actuel du spot (12€, 18€, 25€, 35€ ou 50€ max).
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            Est-ce que je peux sauter un palier de prix ? <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            Non — les paliers sont obligatoires. On ne peut pas passer directement à 50€ sans passer par 12€, 18€, 25€ et 35€ d'abord. C'est une règle du jeu qui ne change pas.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            Que se passe-t-il si personne n'attaque mon spot ? <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            Si ton spot n'est pas attaqué pendant <strong>14 jours</strong>, son prix redescend d'un palier. Après <strong>30 jours</strong> sans attaque, le spot est libéré et repart à 3€. Ça évite que les spots soient bloqués indéfiniment.
+          </div>
+        </div>
+
+      </div>
+
+      <div class="faq-section">
+        <h2>👑 Badges et récompenses</h2>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            C'est quoi le badge Conquérant ? <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            Si tu possèdes TOUS les spots d'un pays en même temps, tu deviens <strong>Conquérant</strong> de ce pays. Le pays devient doré sur la carte. Tu reçois un certificat partageable. Le statut disparaît dès que quelqu'un t'écrase un spot.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            C'est quoi le badge Indestructible ? <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            Si tu te fais écraser à chaque palier et que tu reviens à chaque fois jusqu'au plafond de 50€, tu obtiens le badge <strong>Indestructible</strong>. Un titre permanent visible dans l'historique.
+          </div>
+        </div>
+
+      </div>
+
+      <div class="faq-section">
+        <h2>🔍 Mon compte</h2>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            Comment retrouver mon drapeau ? <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            Entre ton pseudo dans la barre de recherche en haut de la page. Tu verras tous tes spots actifs et éjectés, ton classement et ton statut.<br><br>
+            Si tu as acheté depuis ce navigateur, le bouton <strong>📍 Ma Position</strong> apparaît automatiquement en haut.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            Je n'ai pas reçu d'email de confirmation ? <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            Vérifie tes spams. Si ton drapeau est visible sur la carte, le paiement a bien été traité. Pour toute question : contacte-nous via le formulaire ci-dessous.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            Puis-je avoir plusieurs spots ? <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            Oui ! Tu peux planter dans plusieurs pays différents. Limite : 2 spots maximum dans les petits pays (Luxembourg, Malte, Chypre, Islande) et 5 maximum dans les grands pays.
+          </div>
+        </div>
+
+      </div>
+
+      <div class="faq-section">
+        <h2>🌍 V2 — Carte mondiale</h2>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            Mon pays n'est pas sur la carte ? <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer">
+            FlagClaim couvre l'Europe pour l'instant. La V2 ouvrira les autres continents. Inscris-toi sur la liste d'attente en bas de la carte — tu seras notifié en premier quand ton pays ouvre.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Contact -->
+      <div class="faq-section">
+        <h2>📧 Contact</h2>
+        <p style="color:#aaa; font-size:14px">
+          Une question non couverte ici ? Un problème avec ton paiement ?<br>
+          Écris-nous à <a href="mailto:contact@flagclaim.eu" style="color:#E67E22">contact@flagclaim.eu</a>
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    function toggleFaq(el) {
+      const answer = el.nextElementSibling;
+      const arrow  = el.querySelector('.faq-arrow');
+      const isOpen = answer.style.maxHeight;
+
+      document.querySelectorAll('.faq-answer').forEach(a => a.style.maxHeight = '');
+      document.querySelectorAll('.faq-arrow').forEach(a => a.textContent = '▼');
+
+      if (!isOpen) {
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+        arrow.textContent = '▲';
+      }
+    }
+  </script>
+
+</body>
+</html>

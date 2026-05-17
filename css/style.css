@@ -696,3 +696,49 @@ header {
 .flag-emoji  .fi { width: 1.8em !important; height: 1.3em !important; }
 .hist-flags  .fi { width: 1.5em !important; height: 1.1em !important; }
 .rank-flag   .fi { width: 1.8em !important; height: 1.3em !important; }
+
+/* ===== FAQ ===== */
+.faq-container  { max-width: 800px; margin: 0 auto; }
+
+.faq-section {
+  background:    #1a2540;
+  border-radius: 12px;
+  padding:       20px 24px;
+  margin-bottom: 20px;
+  border:        1px solid #1E3A5F;
+}
+
+.faq-section h2 {
+  font-size:     1.1rem;
+  margin-bottom: 16px;
+  color:         #E67E22;
+}
+
+.faq-item      { border-bottom: 1px solid #0f1a2e; }
+.faq-item:last-child { border-bottom: none; }
+
+.faq-question {
+  padding:     14px 0;
+  cursor:      pointer;
+  font-size:   14px;
+  font-weight: bold;
+  display:     flex;
+  justify-content: space-between;
+  align-items: center;
+  color:       white;
+}
+
+.faq-question:hover { color: #E67E22; }
+.faq-arrow { color: #E67E22; font-size: 12px; }
+
+.faq-answer {
+  max-height:  0;
+  overflow:    hidden;
+  transition:  max-height 0.3s ease;
+  font-size:   13px;
+  color:       #aaa;
+  line-height: 1.6;
+  padding-bottom: 0;
+}
+
+.faq-answer[style*="max-height"] { padding-bottom: 14px; }
