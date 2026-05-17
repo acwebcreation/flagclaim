@@ -119,10 +119,14 @@ async function searchPseudo() {
           <div class="my-spot-pseudo">${spot.pseudo}</div>
           <div class="my-spot-country">${country}</div>
           <div class="my-spot-days" style="color:${isActive ? '#2ECC71' : '#E74C3C'}">
-            ${isActive ? `✅ Actif · ${days} jour${days > 1 ? 's' : ''}` : `⚔️ Éjecté après ${spot.survival_days || days} jours`}
-          </div>
-          ${isActive ? `<div class="my-spot-price">Prix d'écrasement : <strong>${nextPrice}€</strong></div>` : ''}
-        </div>
+            ${isActive ? `
+              <div class="my-spot-price">
+                Prix d'écrasement : <strong>${nextPrice}€</strong>
+                <button class="btn-war-small" onclick="openPanel('${spot.country_code}')">
+                  ⚔️ Écraser — ${nextPrice}€
+                </button>
+              </div>
+` : ''}
       </div>
     `;
   };

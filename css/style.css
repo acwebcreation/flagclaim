@@ -1013,3 +1013,17 @@ header {
 .my-spot-days    { color: #2ECC71; font-size: 13px; margin-bottom: 4px; }
 .my-spot-link    { color: #E67E22; font-size: 12px; margin-bottom: 4px; }
 .my-spot-price   { color: #888; font-size: 12px; margin-top: 6px; }
+
+.btn-war-small {
+  background:    #E74C3C;
+  border:        none;
+  border-radius: 6px;
+  color:         white;
+  padding:       4px 10px;
+  font-size:     12px;
+  cursor:        pointer;
+  margin-left:   8px;
+  vertical-align: middle;
+}
+
+.btn-war-small:hover { opacity: 0.85; }
