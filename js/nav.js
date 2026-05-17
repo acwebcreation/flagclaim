@@ -9,10 +9,70 @@ function checkMyPosition() {
 }
 
 // Va à ma position sur la carte
-function goToMyPosition() {
+async function goToMyPosition() {
   const user = JSON.parse(localStorage.getItem('flagclaim_user') || 'null');
   if (!user) return;
-  openPanel(user.country);
+
+  // Récupère le spot actif de l'utilisateur
+  const spots = await sbGet('spots',
+    `select=*&pseudo=eq.${user.pseudo}&status=eq.active`
+  );
+
+  const panel   = document.getElementById('side-panel');
+  const content = document.getElementById('panel-content');
+
+  if (!spots || spots.length === 0) {
+    content.innerHTML = `
+      <div class="panel-header">
+        <h2>📍 Ma Position</h2>
+      </div>
+      <p style="color:#aaa; font-size:14px; margin-top:20px">
+        Tu n'as plus de spot actif.<br><br>
+        <a href="index.html" style="color:#E67E22">Planter un nouveau drapeau →</a>
+      </p>
+    `;
+    panel.classList.remove('hidden');
+    document.getElementById('close-panel').onclick = () => panel.classList.add('hidden');
+    return;
+  }
+
+  const html = spots.map(spot => {
+    const flag    = getFlagEmoji(spot.flag_origin);
+    const country = countryNames[spot.country_code] || spot.country_code;
+    const days    = Math.floor((Date.now() - new Date(spot.planted_at)) / 86400000);
+    const warPrices = [12, 18, 25, 35, 50];
+    const nextPrice = warPrices[Math.min((spot.war_count || 0) + 1, 4)];
+
+    return `
+      <div class="my-spot-card">
+        <div class="my-spot-flag">${flag}</div>
+        <div class="my-spot-info">
+          <div class="my-spot-pseudo">${spot.pseudo}</div>
+          <div class="my-spot-country">${country}</div>
+          <div class="my-spot-days">⏱️ ${days} jour${days > 1 ? 's' : ''} de survie</div>
+          ${spot.has_link && spot.social_url ? `<div class="my-spot-link">🔗 ${spot.social_url}</div>` : ''}
+          <div class="my-spot-price">Prix d'écrasement actuel : <strong>${nextPrice}€</strong></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  content.innerHTML = `
+    <div class="panel-header">
+      <h2>📍 Ma Position</h2>
+      <p style="color:#aaa; font-size:12px">${spots.length} spot${spots.length > 1 ? 's' : ''} actif${spots.length > 1 ? 's' : ''}</p>
+    </div>
+    ${html}
+    <div style="margin-top:20px">
+      <a href="historique.html?pseudo=${user.pseudo}" 
+         style="color:#E67E22; font-size:13px">
+        📜 Voir tout mon historique →
+      </a>
+    </div>
+  `;
+
+  panel.classList.remove('hidden');
+  document.getElementById('close-panel').onclick = () => panel.classList.add('hidden');
 }
 
 // Recherche par pseudo
@@ -20,15 +80,79 @@ async function searchPseudo() {
   const pseudo = document.getElementById('search-pseudo').value.trim();
   if (!pseudo) return;
 
-  const spots = await sbGet('spots', `select=*&pseudo=eq.${pseudo}&order=planted_at.desc`);
+  const spots = await sbGet('spots',
+    `select=*&pseudo=eq.${pseudo}&order=planted_at.desc`
+  );
+
+  const panel   = document.getElementById('side-panel');
+  const content = document.getElementById('panel-content');
 
   if (!spots || spots.length === 0) {
-    alert('Aucun drapeau trouvé pour ce pseudo.');
+    content.innerHTML = `
+      <div class="panel-header">
+        <h2>🔍 "${pseudo}"</h2>
+      </div>
+      <p style="color:#aaa; font-size:14px; margin-top:20px">
+        Aucun drapeau trouvé pour ce pseudo.
+      </p>
+    `;
+    panel.classList.remove('hidden');
+    document.getElementById('close-panel').onclick = () => panel.classList.add('hidden');
     return;
   }
 
-  // Ouvre le panel du premier pays trouvé
-  openPanel(spots[0].country_code, pseudo);
+  const actifs  = spots.filter(s => s.status === 'active');
+  const ejectes = spots.filter(s => s.status === 'ejected');
+
+  const renderSpot = (spot, showStatus = false) => {
+    const flag    = getFlagEmoji(spot.flag_origin);
+    const country = countryNames[spot.country_code] || spot.country_code;
+    const days    = Math.floor((Date.now() - new Date(spot.planted_at)) / 86400000);
+    const warPrices = [12, 18, 25, 35, 50];
+    const nextPrice = warPrices[Math.min((spot.war_count || 0) + 1, 4)];
+    const isActive  = spot.status === 'active';
+
+    return `
+      <div class="my-spot-card" style="${!isActive ? 'opacity:0.6; border-left-color:#E74C3C' : ''}">
+        <div class="my-spot-flag">${flag}</div>
+        <div class="my-spot-info">
+          <div class="my-spot-pseudo">${spot.pseudo}</div>
+          <div class="my-spot-country">${country}</div>
+          <div class="my-spot-days" style="color:${isActive ? '#2ECC71' : '#E74C3C'}">
+            ${isActive ? `✅ Actif · ${days} jour${days > 1 ? 's' : ''}` : `⚔️ Éjecté après ${spot.survival_days || days} jours`}
+          </div>
+          ${isActive ? `<div class="my-spot-price">Prix d'écrasement : <strong>${nextPrice}€</strong></div>` : ''}
+        </div>
+      </div>
+    `;
+  };
+
+  content.innerHTML = `
+    <div class="panel-header">
+      <h2>🔍 "${pseudo}"</h2>
+      <p style="color:#aaa; font-size:12px">${actifs.length} actif · ${ejectes.length} éjecté${ejectes.length > 1 ? 's' : ''}</p>
+    </div>
+
+    ${actifs.length > 0 ? `
+      <h3 style="font-size:13px; color:#aaa; margin:12px 0 8px">✅ Spots actifs</h3>
+      ${actifs.map(s => renderSpot(s)).join('')}
+    ` : ''}
+
+    ${ejectes.length > 0 ? `
+      <h3 style="font-size:13px; color:#aaa; margin:12px 0 8px">⚔️ Historique</h3>
+      ${ejectes.map(s => renderSpot(s)).join('')}
+    ` : ''}
+
+    <div style="margin-top:16px">
+      <a href="historique.html?pseudo=${pseudo}" 
+         style="color:#E67E22; font-size:13px">
+        📜 Voir l'historique complet →
+      </a>
+    </div>
+  `;
+
+  panel.classList.remove('hidden');
+  document.getElementById('close-panel').onclick = () => panel.classList.add('hidden');
 }
 
 // Vérifie au chargement

@@ -995,3 +995,21 @@ header {
 @media (max-width: 600px) {
   .amb-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ===== MA POSITION ===== */
+.my-spot-card {
+  display:       flex;
+  gap:           14px;
+  background:    #0f1a2e;
+  border-radius: 10px;
+  padding:       16px;
+  margin-bottom: 12px;
+  border-left:   3px solid #E67E22;
+}
+
+.my-spot-flag    { font-size: 36px; }
+.my-spot-pseudo  { font-weight: bold; font-size: 16px; margin-bottom: 4px; }
+.my-spot-country { color: #aaa; font-size: 13px; margin-bottom: 4px; }
+.my-spot-days    { color: #2ECC71; font-size: 13px; margin-bottom: 4px; }
+.my-spot-link    { color: #E67E22; font-size: 12px; margin-bottom: 4px; }
+.my-spot-price   { color: #888; font-size: 12px; margin-top: 6px; }
